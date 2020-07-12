@@ -25,7 +25,7 @@ interface ApiService {
          *
          * @return An instance of [ApiService]
          */
-        fun createTeamService(): ApiService {
+        fun createApiService(): ApiService {
             val retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())

@@ -57,6 +57,11 @@ class PodcastsListViewModel(
         this.searchTerm.value = searchTerm
     }
 
+    @TestOnly
+    fun setPodcasts(podcasts: ArrayList<Podcast>) {
+        this.podcasts.value = podcasts
+    }
+
     /**
      * Fetches and returns the list of podcasts.
      *

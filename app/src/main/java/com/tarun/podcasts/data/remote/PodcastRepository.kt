@@ -10,7 +10,7 @@ class PodcastRepository private constructor(){
     companion object {
         private const val TAG = "PodcastRepository"
         val instance = PodcastRepository()
-        private val apiService = ApiService.Creator.createTeamService()
+        private val apiService = ApiService.Creator.createApiService()
     }
 
     /**
