@@ -6,24 +6,21 @@ import androidx.lifecycle.ViewModel
 import com.tarun.podcasts.data.model.Podcast
 import com.tarun.podcasts.data.model.PodcastsListResult
 import com.tarun.podcasts.data.remote.PodcastRepository
-import com.tarun.podcasts.schedulers.SchedulerProviderManager
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import com.tarun.podcasts.schedulers.SchedulerProvider
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
-import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
  * The view model class for the [PodcastsListFragment] view.
  */
-class PodcastsListViewModel : ViewModel() {
+class PodcastsListViewModel(private val schedulerProvider: SchedulerProvider) : ViewModel() {
     companion object {
         private const val TAG = "PodcastsListViewModel"
     }
 
     private val podcasts: MutableLiveData<ArrayList<Podcast>> = MutableLiveData()
     private val disposables = CompositeDisposable()
-    private val schedulerProvider = SchedulerProviderManager
-    private val podcastRepository = PodcastRepository.newInstance()
+    private val podcastRepository = PodcastRepository.instance
     private var searchTerm: String = ""
 
     /**

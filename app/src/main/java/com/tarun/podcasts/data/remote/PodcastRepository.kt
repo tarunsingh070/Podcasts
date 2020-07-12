@@ -9,10 +9,9 @@ import io.reactivex.rxjava3.core.Single
 class PodcastRepository {
     companion object {
         private const val TAG = "PodcastRepository"
-        fun newInstance() = PodcastRepository()
+        val instance = PodcastRepository()
+        private val apiService = ApiService.Creator.createTeamService()
     }
-
-    private val apiService = ApiService.Creator.createTeamService()
 
     /**
      * Gets the list of podcasts.

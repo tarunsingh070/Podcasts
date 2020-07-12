@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.tarun.podcasts.R
 import com.tarun.podcasts.databinding.PodcastsListFragmentBinding
+import com.tarun.podcasts.schedulers.SchedulerProviderManager
 
 /**
  * Fragment showing the list of podcasts.
@@ -40,7 +41,8 @@ class PodcastsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(PodcastsListViewModel::class.java)
+        viewModel = ViewModelProvider(this, PodcastsListViewModelFactory(SchedulerProviderManager))
+            .get(PodcastsListViewModel::class.java)
         adapter = PodcastsListAdapter()
         setupRecyclerView()
         observePodcastList()
