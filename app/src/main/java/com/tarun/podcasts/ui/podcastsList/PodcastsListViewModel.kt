@@ -24,11 +24,28 @@ class PodcastsListViewModel : ViewModel() {
     private val disposables = CompositeDisposable()
     private val schedulerProvider = SchedulerProviderManager
     private val podcastRepository = PodcastRepository.newInstance()
+    private var searchTerm: String = ""
+
+    /**
+     * Handles the event when user submits the search term.
+     *
+     * @param searchTerm The search term submitted by user.
+     */
+    fun onQuerySubmitted(searchTerm: String) {
+        if (searchTerm == this.searchTerm) {
+            return
+        }
+
+        this.searchTerm = searchTerm
+        getPodcastList(searchTerm)
+    }
 
     /**
      * Fetches and returns the list of podcasts.
+     *
+     * @param searchTerm The search term submitted by user.
      */
-    fun getPodcastList(searchTerm: String): MutableLiveData<ArrayList<Podcast>> {
+    fun getPodcastList(searchTerm: String = "Android"): MutableLiveData<ArrayList<Podcast>> {
         disposables.add(
             podcastRepository
                 .getPodcasts(searchTerm)

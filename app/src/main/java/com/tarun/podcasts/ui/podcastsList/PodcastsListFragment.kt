@@ -43,7 +43,7 @@ class PodcastsListFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(PodcastsListViewModel::class.java)
         adapter = PodcastsListAdapter()
         setupRecyclerView()
-        displayPodcastList()
+        observePodcastList()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -57,7 +57,7 @@ class PodcastsListFragment : Fragment() {
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (query.isNotEmpty()) {
-                    displayPodcastList(query)
+                    viewModel.onQuerySubmitted(query)
                 }
                 return false
             }
@@ -91,10 +91,10 @@ class PodcastsListFragment : Fragment() {
     }
 
     /**
-     * Fetches the list of podcasts and updates the UI when changes are detected.
+     * Observes the list of podcasts and updates the UI when changes are detected.
      */
-    private fun displayPodcastList(searchTerm: String = "Android") {
-        viewModel.getPodcastList(searchTerm).observe(viewLifecycleOwner, Observer {
+    private fun observePodcastList() {
+        viewModel.getPodcastList().observe(viewLifecycleOwner, Observer {
             adapter.setPodcasts(it)
             adapter.notifyDataSetChanged()
             binding.emptyLabel.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
