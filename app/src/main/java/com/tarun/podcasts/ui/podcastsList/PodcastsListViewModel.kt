@@ -13,14 +13,14 @@ import io.reactivex.rxjava3.observers.DisposableSingleObserver
 /**
  * The view model class for the [PodcastsListFragment] view.
  */
-class PodcastsListViewModel(private val schedulerProvider: SchedulerProvider) : ViewModel() {
+class PodcastsListViewModel(private val schedulerProvider: SchedulerProvider,
+                            private val podcastRepository: PodcastRepository) : ViewModel() {
     companion object {
         private const val TAG = "PodcastsListViewModel"
     }
 
     private val podcasts: MutableLiveData<ArrayList<Podcast>> = MutableLiveData()
     private val disposables = CompositeDisposable()
-    private val podcastRepository = PodcastRepository.instance
     private var searchTerm: String = ""
 
     /**
