@@ -16,6 +16,8 @@ class PodcastRepository {
 
     /**
      * Gets the list of podcasts.
+     *
+     * @param searchTerm The search term for which to fetch the list of podcasts.
      */
     fun getPodcasts(searchTerm: String): Single<PodcastsListResult> {
         return apiService.searchPodcasts(searchTerm)

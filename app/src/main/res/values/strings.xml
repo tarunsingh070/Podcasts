@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Podcasts</string>
+
+    <!--Menu titles-->
+    <string name="action_search_podcasts">Search podcasts</string>
+
+    <!--Podcasts List Screen-->
+    <string name="search_podcasts">Search podcasts…</string>
+    <string name="no_results">No results!</string>
 </resources>

@@ -27,11 +27,10 @@ class PodcastsListViewModel : ViewModel() {
     /**
      * Fetches and returns the list of podcasts.
      */
-    fun getPodcastList(): MutableLiveData<ArrayList<Podcast>> {
+    fun getPodcastList(searchTerm: String): MutableLiveData<ArrayList<Podcast>> {
         disposables.add(
             podcastRepository
-                // FixMe: replace this hardcode search term if you end up adding search bar.
-                .getPodcasts("Android")
+                .getPodcasts(searchTerm)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<PodcastsListResult>() {

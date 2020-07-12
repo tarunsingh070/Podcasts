@@ -1,9 +1,8 @@
 package com.tarun.podcasts.ui.podcastsList
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +25,11 @@ class PodcastsListFragment : Fragment() {
     private lateinit var binding: PodcastsListFragmentBinding
     private lateinit var viewModel: PodcastsListViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,7 +43,32 @@ class PodcastsListFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(PodcastsListViewModel::class.java)
         adapter = PodcastsListAdapter()
         setupRecyclerView()
-        observePodcastList()
+        displayPodcastList()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.podcasts_list_fragment_menu, menu)
+
+        val searchViewMenuItem = menu.findItem(R.id.action_search)
+        val searchView =
+            searchViewMenuItem.actionView as SearchView
+        searchView.queryHint = getString(R.string.search_podcasts)
+        searchView.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                if (query.isNotEmpty()) {
+                    displayPodcastList(query)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(s: String): Boolean {
+                return false
+            }
+        })
+
+
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     /**
@@ -62,12 +91,13 @@ class PodcastsListFragment : Fragment() {
     }
 
     /**
-     * Observes the list of podcasts and take actions when changes are detected.
+     * Fetches the list of podcasts and updates the UI when changes are detected.
      */
-    private fun observePodcastList() {
-        viewModel.getPodcastList().observe(viewLifecycleOwner, Observer {
+    private fun displayPodcastList(searchTerm: String = "Android") {
+        viewModel.getPodcastList(searchTerm).observe(viewLifecycleOwner, Observer {
             adapter.setPodcasts(it)
             adapter.notifyDataSetChanged()
+            binding.emptyLabel.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
         })
     }
 }
