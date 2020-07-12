@@ -3,6 +3,7 @@ package com.tarun.podcasts.ui.podcastsList
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.tarun.podcasts.R
 import com.tarun.podcasts.data.model.Podcast
 import com.tarun.podcasts.data.model.PodcastsListResult
 import com.tarun.podcasts.data.remote.PodcastRepository
@@ -26,6 +27,7 @@ class PodcastsListViewModel(
     private val disposables = CompositeDisposable()
     internal var searchTerm: MutableLiveData<String> = MutableLiveData()
     internal var isLoading: MutableLiveData<Boolean> = MutableLiveData()
+    internal var errorMessage: MutableLiveData<Int> = MutableLiveData()
 
     /**
      * Handles the event when onViewCreated method of [PodcastsListFragment] is called.
@@ -75,6 +77,7 @@ class PodcastsListViewModel(
 
                     override fun onError(e: Throwable?) {
                         setLoadingState(false)
+                        setErrorMessage(R.string.error_message)
                         Log.e(TAG, "Error fetching podcasts list.", e)
                     }
                 })
@@ -90,5 +93,14 @@ class PodcastsListViewModel(
      */
     private fun setLoadingState(shouldShow: Boolean) {
         isLoading.value = shouldShow
+    }
+
+    /**
+     * Sets the error message to be shown to the user.
+     *
+     * @param errorMessageResId The resource ID of the error message to be shown
+     */
+    private fun setErrorMessage(errorMessageResId: Int) {
+        errorMessage.value = errorMessageResId
     }
 }

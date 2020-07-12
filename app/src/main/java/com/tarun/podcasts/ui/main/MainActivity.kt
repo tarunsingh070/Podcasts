@@ -1,6 +1,7 @@
 package com.tarun.podcasts.ui.main
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
 //        attachPodcastsListFragment()
         observeLoadingState()
+        observeErrorMessage()
     }
 
     /**
@@ -65,6 +67,15 @@ class MainActivity : AppCompatActivity() {
     private fun observeLoadingState() {
         viewModel.isLoading.observe(this, Observer {
             binding.mainActivityProgress.setVisibility(it)
+        })
+    }
+
+    /**
+     * Observes and shows the error message as a Toast to the user.
+     */
+    private fun observeErrorMessage() {
+        viewModel.errorMessage.observe(this, Observer {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
         })
     }
 }
