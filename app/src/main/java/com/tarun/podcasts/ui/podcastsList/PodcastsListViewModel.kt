@@ -9,6 +9,7 @@ import com.tarun.podcasts.data.remote.PodcastRepository
 import com.tarun.podcasts.schedulers.SchedulerProvider
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
+import org.jetbrains.annotations.TestOnly
 
 /**
  * The view model class for the [PodcastsListFragment] view.
@@ -35,6 +36,11 @@ class PodcastsListViewModel(private val schedulerProvider: SchedulerProvider,
 
         this.searchTerm = searchTerm
         getPodcastList(searchTerm)
+    }
+
+    @TestOnly
+    fun setQuery(searchTerm: String) {
+        this.searchTerm = searchTerm
     }
 
     /**
