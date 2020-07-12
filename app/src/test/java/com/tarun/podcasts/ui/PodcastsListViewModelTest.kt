@@ -1,5 +1,6 @@
 package com.tarun.podcasts.ui
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.tarun.podcasts.data.model.Podcast
 import com.tarun.podcasts.data.model.PodcastsListResult
 import com.tarun.podcasts.data.remote.PodcastRepository
@@ -15,15 +16,12 @@ import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnit
-import org.mockito.junit.MockitoRule
 
 @RunWith(JUnit4::class)
 class PodcastsListViewModelTest {
-
     @Rule
     @JvmField
-    val mockitoRule: MockitoRule = MockitoJUnit.rule()
+    var instantExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val test = "test"
 
@@ -45,7 +43,8 @@ class PodcastsListViewModelTest {
 
         val podcastListReturn: PodcastsListResult = Mockito.mock(PodcastsListResult::class.java)
         Mockito.`when`(podcastListReturn.podcasts).thenReturn(podcastsList)
-        Mockito.`when`(mockPodcastRepository.getPodcasts(test)).thenReturn(Single.just(podcastListReturn))
+        Mockito.`when`(mockPodcastRepository.getPodcasts(test))
+            .thenReturn(Single.just(podcastListReturn))
 
         viewModel = PodcastsListViewModel(testSchedulerProviderManager, mockPodcastRepository)
     }
