@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.tarun.podcasts.data.model.Podcast
 import com.tarun.podcasts.databinding.ItemPodcastBinding
 
 /**
@@ -11,7 +12,7 @@ import com.tarun.podcasts.databinding.ItemPodcastBinding
  */
 class PodcastsListAdapter : RecyclerView.Adapter<PodcastsListAdapter.ViewHolder>() {
 
-    private var podcasts: ArrayList<String> = ArrayList()
+    private var podcasts: ArrayList<Podcast> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemPodcastBinding =
@@ -25,7 +26,7 @@ class PodcastsListAdapter : RecyclerView.Adapter<PodcastsListAdapter.ViewHolder>
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.podcast = podcasts[position]
-        holder.binding.collectionName.text = holder.podcast
+        holder.binding.collectionName.text = holder.podcast.collectionName
     }
 
     override fun getItemCount(): Int {
@@ -37,7 +38,7 @@ class PodcastsListAdapter : RecyclerView.Adapter<PodcastsListAdapter.ViewHolder>
      *
      * @param updatedPodcasts The updated list of podcasts received.
      */
-    fun setPodcasts(updatedPodcasts: ArrayList<String>) {
+    fun setPodcasts(updatedPodcasts: ArrayList<Podcast>) {
         podcasts = updatedPodcasts
     }
 
@@ -46,7 +47,7 @@ class PodcastsListAdapter : RecyclerView.Adapter<PodcastsListAdapter.ViewHolder>
      */
     inner class ViewHolder(val binding: ItemPodcastBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
-        lateinit var podcast: String
+        lateinit var podcast: Podcast
         override fun onClick(v: View) {
             // Todo: Open Podcast details fragment.
         }

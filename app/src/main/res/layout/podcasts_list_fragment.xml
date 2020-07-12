@@ -10,7 +10,5 @@
         android:id="@+id/podcast_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
         tools:listitem="@layout/item_podcast"/>
 </FrameLayout>

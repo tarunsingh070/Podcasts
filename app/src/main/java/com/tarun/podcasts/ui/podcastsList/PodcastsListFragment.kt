@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import com.tarun.podcasts.R
 import com.tarun.podcasts.databinding.PodcastsListFragmentBinding
 
 /**
@@ -36,16 +39,35 @@ class PodcastsListFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(PodcastsListViewModel::class.java)
         adapter = PodcastsListAdapter()
         setupRecyclerView()
+        observePodcastList()
     }
 
     /**
      * Sets up the recycler view for showing the Podcasts list.
      */
     private fun setupRecyclerView() {
+        val columnCount = resources.getInteger(R.integer.podcast_list_column_count)
+
         binding.podcastListRecyclerView.adapter = adapter
-        // Todo: Replace with list of actual podcast objects later when logic to fetch Podcasts
-        //  from iTunes Web API is implemented.
-        adapter.setPodcasts(arrayListOf("Podcast 1", "Podcast 2", "Podcast 3"))
+        binding.podcastListRecyclerView.layoutManager = GridLayoutManager(context, columnCount)
+
+        val itemSpacing: Int =
+            resources.getDimension(R.dimen.podcast_item_grid_spacing).toInt()
+        binding.podcastListRecyclerView.addItemDecoration(
+            PodcastItemDecoration(
+                columnCount,
+                itemSpacing
+            )
+        )
     }
 
+    /**
+     * Observes the list of podcasts and take actions when changes are detected.
+     */
+    private fun observePodcastList() {
+        viewModel.getPodcastList().observe(viewLifecycleOwner, Observer {
+            adapter.setPodcasts(it)
+            adapter.notifyDataSetChanged()
+        })
+    }
 }
