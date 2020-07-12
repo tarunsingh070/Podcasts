@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tarun.podcasts.data.model.Podcast
 import com.tarun.podcasts.databinding.ItemPodcastBinding
+import com.tarun.podcasts.ui.loadImageFromUrl
 
 /**
  * The adapter class for showing list of Podcasts.
@@ -26,7 +27,9 @@ class PodcastsListAdapter : RecyclerView.Adapter<PodcastsListAdapter.ViewHolder>
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.podcast = podcasts[position]
+        holder.binding.artistName.text = holder.podcast.artistName
         holder.binding.collectionName.text = holder.podcast.collectionName
+        holder.binding.artworkImageView.loadImageFromUrl(holder.podcast.artworkUrl)
     }
 
     override fun getItemCount(): Int {
@@ -44,6 +47,8 @@ class PodcastsListAdapter : RecyclerView.Adapter<PodcastsListAdapter.ViewHolder>
 
     /**
      * View holder class for [PodcastsListAdapter]
+     *
+     * @param binding: The instance of [ItemPodcastBinding] for this instance of holder.
      */
     inner class ViewHolder(val binding: ItemPodcastBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
