@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.tarun.podcasts.data.model.Podcast
 import com.tarun.podcasts.data.model.PodcastsListResult
 import com.tarun.podcasts.data.remote.PodcastRepository
+import com.tarun.podcasts.schedulers.SchedulerProviderManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
@@ -19,9 +20,9 @@ class PodcastsListViewModel : ViewModel() {
         private const val TAG = "PodcastsListViewModel"
     }
 
-    val podcasts: MutableLiveData<ArrayList<Podcast>> = MutableLiveData()
+    private val podcasts: MutableLiveData<ArrayList<Podcast>> = MutableLiveData()
     private val disposables = CompositeDisposable()
-
+    private val schedulerProvider = SchedulerProviderManager
     private val podcastRepository = PodcastRepository.newInstance()
 
     /**
@@ -31,8 +32,8 @@ class PodcastsListViewModel : ViewModel() {
         disposables.add(
             podcastRepository
                 .getPodcasts(searchTerm)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribeWith(object : DisposableSingleObserver<PodcastsListResult>() {
                     override fun onSuccess(t: PodcastsListResult?) {
                         podcasts.value = t?.podcasts

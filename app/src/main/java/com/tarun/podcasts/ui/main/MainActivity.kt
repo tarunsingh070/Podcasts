@@ -1,4 +1,4 @@
-package com.tarun.podcasts.ui
+package com.tarun.podcasts.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
