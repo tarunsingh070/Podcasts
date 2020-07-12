@@ -2,6 +2,7 @@ package com.tarun.podcasts.ui.podcastsList
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -11,6 +12,7 @@ import com.tarun.podcasts.R
 import com.tarun.podcasts.data.remote.PodcastRepository
 import com.tarun.podcasts.databinding.PodcastsListFragmentBinding
 import com.tarun.podcasts.schedulers.SchedulerProviderManager
+import com.tarun.podcasts.ui.setVisibility
 
 /**
  * Fragment showing the list of podcasts.
@@ -42,12 +44,15 @@ class PodcastsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this,
-            PodcastsListViewModelFactory(SchedulerProviderManager, PodcastRepository.instance))
+        viewModel = ViewModelProvider(
+            activity as AppCompatActivity,
+            PodcastsListViewModelFactory(SchedulerProviderManager, PodcastRepository.instance)
+        )
             .get(PodcastsListViewModel::class.java)
         adapter = PodcastsListAdapter()
         setupRecyclerView()
         observePodcastList()
+        viewModel.onViewCreated()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -60,9 +65,7 @@ class PodcastsListFragment : Fragment() {
         searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                if (query.isNotEmpty()) {
-                    viewModel.onQuerySubmitted(query)
-                }
+                viewModel.onQuerySubmitted(query)
                 return false
             }
 
@@ -71,6 +74,11 @@ class PodcastsListFragment : Fragment() {
             }
         })
 
+        viewModel.searchTerm.observe(viewLifecycleOwner, Observer {
+            // Restore the last saved search query text.
+            searchViewMenuItem.expandActionView()
+            searchView.setQuery(it, false)
+        })
 
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -98,10 +106,10 @@ class PodcastsListFragment : Fragment() {
      * Observes the list of podcasts and updates the UI when changes are detected.
      */
     private fun observePodcastList() {
-        viewModel.getPodcastList().observe(viewLifecycleOwner, Observer {
+        viewModel.podcasts.observe(viewLifecycleOwner, Observer {
             adapter.setPodcasts(it)
             adapter.notifyDataSetChanged()
-            binding.emptyLabel.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+            binding.emptyLabel.setVisibility(it.isEmpty())
         })
     }
 }

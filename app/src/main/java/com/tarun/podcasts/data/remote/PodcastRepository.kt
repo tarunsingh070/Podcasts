@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.core.Single
 /**
  * The repository class used to make API calls to fetch data from web server.
  */
-class PodcastRepository {
+class PodcastRepository private constructor(){
     companion object {
         private const val TAG = "PodcastRepository"
         val instance = PodcastRepository()

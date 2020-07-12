@@ -14,15 +14,27 @@ import org.jetbrains.annotations.TestOnly
 /**
  * The view model class for the [PodcastsListFragment] view.
  */
-class PodcastsListViewModel(private val schedulerProvider: SchedulerProvider,
-                            private val podcastRepository: PodcastRepository) : ViewModel() {
+class PodcastsListViewModel(
+    private val schedulerProvider: SchedulerProvider,
+    private val podcastRepository: PodcastRepository
+) : ViewModel() {
     companion object {
         private const val TAG = "PodcastsListViewModel"
     }
 
-    private val podcasts: MutableLiveData<ArrayList<Podcast>> = MutableLiveData()
+    internal val podcasts: MutableLiveData<ArrayList<Podcast>> = MutableLiveData()
     private val disposables = CompositeDisposable()
-    private var searchTerm: String = ""
+    internal var searchTerm: MutableLiveData<String> = MutableLiveData()
+    internal var isLoading: MutableLiveData<Boolean> = MutableLiveData()
+
+    /**
+     * Handles the event when onViewCreated method of [PodcastsListFragment] is called.
+     */
+    fun onViewCreated() {
+        if (podcasts.value.isNullOrEmpty()) {
+            getPodcastList()
+        }
+    }
 
     /**
      * Handles the event when user submits the search term.
@@ -30,17 +42,17 @@ class PodcastsListViewModel(private val schedulerProvider: SchedulerProvider,
      * @param searchTerm The search term submitted by user.
      */
     fun onQuerySubmitted(searchTerm: String) {
-        if (searchTerm == this.searchTerm) {
+        if (searchTerm.isEmpty() || searchTerm == this.searchTerm.value) {
             return
         }
 
-        this.searchTerm = searchTerm
+        this.searchTerm.value = searchTerm
         getPodcastList(searchTerm)
     }
 
     @TestOnly
     fun setQuery(searchTerm: String) {
-        this.searchTerm = searchTerm
+        this.searchTerm.value = searchTerm
     }
 
     /**
@@ -49,6 +61,7 @@ class PodcastsListViewModel(private val schedulerProvider: SchedulerProvider,
      * @param searchTerm The search term submitted by user.
      */
     fun getPodcastList(searchTerm: String = "Android"): MutableLiveData<ArrayList<Podcast>> {
+        setLoadingState(true)
         disposables.add(
             podcastRepository
                 .getPodcasts(searchTerm)
@@ -56,15 +69,26 @@ class PodcastsListViewModel(private val schedulerProvider: SchedulerProvider,
                 .observeOn(schedulerProvider.ui())
                 .subscribeWith(object : DisposableSingleObserver<PodcastsListResult>() {
                     override fun onSuccess(t: PodcastsListResult?) {
+                        setLoadingState(false)
                         podcasts.value = t?.podcasts
                     }
 
                     override fun onError(e: Throwable?) {
+                        setLoadingState(false)
                         Log.e(TAG, "Error fetching podcasts list.", e)
                     }
                 })
         )
 
         return podcasts
+    }
+
+    /**
+     * Sets the loading state value.
+     *
+     * @param shouldShow A boolean indicating if the loading state should be shown or hidden.
+     */
+    private fun setLoadingState(shouldShow: Boolean) {
+        isLoading.value = shouldShow
     }
 }
