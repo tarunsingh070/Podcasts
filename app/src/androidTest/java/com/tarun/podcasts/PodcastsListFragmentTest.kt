@@ -16,66 +16,74 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class PodcastsListFragmentTest {
+
+    companion object {
+        lateinit var server: MockWebServer
+
+        @BeforeClass @JvmStatic
+        fun setUp() {
+            server = MockWebServer()
+            server.start()
+
+            ApiService.Creator.updateBaseUrl(server.url("/").toString())
+            server.setDispatcher(getDispatcher())
+        }
+
+        /**
+         * Creates a mock web server dispatcher with prerecorded requests and responses.
+         *
+         * @return An instance of [Dispatcher]
+         */
+        private fun getDispatcher(): Dispatcher? {
+            return object : Dispatcher() {
+                override fun dispatch(request: RecordedRequest): MockResponse? {
+                    when (request.path) {
+                        "/search?media=podcast&country=ca&term=Android" -> {
+                            return MockResponse()
+                                .setResponseCode(200)
+                                .setBody(
+                                    FileReaderTestHelper.getStringFromFile(
+                                        InstrumentationRegistry.getInstrumentation()
+                                            .context,
+                                        "get_podcasts_android_200_ok_response.json"
+                                    )
+                                )
+                        }
+                        "/search?media=podcast&country=ca&term=Mustang" -> {
+                            return MockResponse()
+                                .setResponseCode(200)
+                                .setBody(
+                                    FileReaderTestHelper.getStringFromFile(
+                                        InstrumentationRegistry.getInstrumentation()
+                                            .context,
+                                        "get_podcasts_mustang_200_ok_response.json"
+                                    )
+                                )
+                        }
+                    }
+
+                    throw IllegalStateException("no mock set up for " + request.path)
+                }
+            }
+        }
+
+        @AfterClass @JvmStatic
+        fun tearDown() {
+            server.shutdown()
+        }
+    }
+
     @get:Rule
     var activityRule: ActivityTestRule<MainActivity> =
         ActivityTestRule(MainActivity::class.java, false, false)
 
-    lateinit var server: MockWebServer
-
-    /**
-     * Creates a mock web server dispatcher with prerecorded requests and responses.
-     *
-     * @return An instance of [Dispatcher]
-     */
-    private fun getDispatcher(): Dispatcher? {
-        return object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse? {
-                when (request.path) {
-                    "/search?media=podcast&country=ca&term=Android" -> {
-                        return MockResponse()
-                            .setResponseCode(200)
-                            .setBody(
-                                FileReaderTestHelper.getStringFromFile(
-                                    InstrumentationRegistry.getInstrumentation()
-                                        .context,
-                                    "get_podcasts_android_200_ok_response.json"
-                                )
-                            )
-                    }
-                    "/search?media=podcast&country=ca&term=Mustang" -> {
-                        return MockResponse()
-                            .setResponseCode(200)
-                            .setBody(
-                                FileReaderTestHelper.getStringFromFile(
-                                    InstrumentationRegistry.getInstrumentation()
-                                        .context,
-                                    "get_podcasts_mustang_200_ok_response.json"
-                                )
-                            )
-                    }
-                }
-
-                throw IllegalStateException("no mock set up for " + request.path)
-            }
-        }
-    }
-
     @Before
-    fun setUp() {
-        server = MockWebServer()
-        server.start()
-
-        ApiService.Creator.updateBaseUrl(server.url("/").toString())
-        server.setDispatcher(getDispatcher())
-
+    fun beforeTest() {
         activityRule.launchActivity(Intent())
     }
 
@@ -100,10 +108,5 @@ class PodcastsListFragmentTest {
             )
 
         onView(withText("Mustang Car Show")).check(matches(isDisplayed()))
-    }
-
-    @After
-    fun tearDown() {
-        server.shutdown()
     }
 }

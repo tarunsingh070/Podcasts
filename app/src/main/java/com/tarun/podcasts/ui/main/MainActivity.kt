@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.tarun.podcasts.R
 import com.tarun.podcasts.data.remote.PodcastRepository
 import com.tarun.podcasts.databinding.ActivityMainBinding
@@ -28,9 +28,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProviders.of(
-            this,
-            PodcastsListViewModelFactory(SchedulerProviderManager, PodcastRepository.instance)
+        viewModel = ViewModelProvider(
+            this, PodcastsListViewModelFactory(
+                SchedulerProviderManager,
+                PodcastRepository.instance
+            )
         )
             .get(PodcastsListViewModel::class.java)
 
