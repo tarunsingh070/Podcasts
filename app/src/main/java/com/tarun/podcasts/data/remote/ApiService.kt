@@ -1,9 +1,9 @@
 package com.tarun.podcasts.data.remote
 
-import com.tarun.podcasts.data.BASE_URL
 import com.tarun.podcasts.data.model.PodcastsListResult
 import io.reactivex.rxjava3.core.Single
 import okhttp3.OkHttpClient
+import org.jetbrains.annotations.TestOnly
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -19,7 +19,7 @@ interface ApiService {
     fun searchPodcasts(@Query("term") searchTerm: String?): Single<PodcastsListResult>
 
     object Creator {
-//        private const val BASE_URL = "https://itunes.apple.com/"
+        private var BASE_URL = "https://itunes.apple.com/"
 
         /**
          * Create an instance of [ApiService].
@@ -47,6 +47,11 @@ interface ApiService {
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build()
+        }
+
+        @TestOnly
+        fun updateBaseUrl(newBaseUrl: String) {
+            BASE_URL = newBaseUrl
         }
     }
 }

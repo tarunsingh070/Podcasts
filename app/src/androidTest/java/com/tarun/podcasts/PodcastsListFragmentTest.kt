@@ -10,7 +10,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import com.tarun.podcasts.data.BASE_URL
+import com.tarun.podcasts.data.remote.ApiService
 import com.tarun.podcasts.ui.main.MainActivity
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
@@ -71,11 +71,9 @@ class PodcastsListFragmentTest {
     @Before
     fun setUp() {
         server = MockWebServer()
-//        server.shutdown()
         server.start()
 
-        // FixMe: Find a better way to set Retrofit's base URL as MockWebServer's base url.
-        BASE_URL = server.url("/").toString()
+        ApiService.Creator.updateBaseUrl(server.url("/").toString())
         server.setDispatcher(getDispatcher())
 
         activityRule.launchActivity(Intent())
