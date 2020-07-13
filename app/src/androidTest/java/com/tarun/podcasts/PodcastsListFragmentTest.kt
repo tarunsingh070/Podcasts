@@ -65,6 +65,17 @@ class PodcastsListFragmentTest {
                                     )
                                 )
                         }
+                        "/search?media=podcast&country=ca&term=weird_string" -> {
+                            return MockResponse()
+                                .setResponseCode(200)
+                                .setBody(
+                                    FileReaderTestHelper.getStringFromFile(
+                                        InstrumentationRegistry.getInstrumentation()
+                                            .context,
+                                        "get_podcasts_no_results_200_ok_response.json"
+                                    )
+                                )
+                        }
                     }
 
                     throw IllegalStateException("no mock set up for " + request.path)
@@ -88,7 +99,7 @@ class PodcastsListFragmentTest {
     }
 
     @Test
-    fun checkIfInitialPodcastsListLoadWorks() {
+    fun testIfInitialPodcastsListLoading() {
         onView(withId(R.id.podcast_list_recycler_view))
             .perform(
                 RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(4)
@@ -97,7 +108,7 @@ class PodcastsListFragmentTest {
     }
 
     @Test
-    fun testSearchFunctionality() {
+    fun testSearchPodcasts_shouldShowSearchResults() {
         onView(withId(R.id.action_search))
             .perform(click())
         onView(withId(R.id.search_src_text))
@@ -108,5 +119,15 @@ class PodcastsListFragmentTest {
             )
 
         onView(withText("Mustang Car Show")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun testSearchPodcasts_noResults_shouldShowEmptyState() {
+        onView(withId(R.id.action_search))
+            .perform(click())
+        onView(withId(R.id.search_src_text))
+            .perform(click(), typeText("weird_string"), pressImeActionButton())
+
+        onView(withId(R.id.empty_label)).check(matches(isDisplayed()))
     }
 }

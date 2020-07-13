@@ -24,10 +24,8 @@
             android:layout_margin="8dp"/>
     </FrameLayout>
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.tarun.podcasts.ui.podcastsList.PodcastsListFragment"/>
-
+        android:layout_height="match_parent"/>
 </RelativeLayout>

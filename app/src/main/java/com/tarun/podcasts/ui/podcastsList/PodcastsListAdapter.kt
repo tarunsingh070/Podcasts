@@ -3,6 +3,7 @@ package com.tarun.podcasts.ui.podcastsList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.tarun.podcasts.R
 import com.tarun.podcasts.data.model.Podcast
@@ -33,6 +34,7 @@ class PodcastsListAdapter : RecyclerView.Adapter<PodcastsListAdapter.ViewHolder>
         holder.binding.collectionName.text = holder.podcast.collectionName
         holder.binding.genre.text = context.getString(R.string.genre_name, holder.podcast.genre)
         holder.binding.artworkImageView.loadImageFromUrl(holder.podcast.artworkUrl)
+        holder.itemView.setOnClickListener(holder)
     }
 
     override fun getItemCount(): Int {
@@ -58,6 +60,7 @@ class PodcastsListAdapter : RecyclerView.Adapter<PodcastsListAdapter.ViewHolder>
         lateinit var podcast: Podcast
         override fun onClick(v: View) {
             // Todo: Open Podcast details fragment.
+            Toast.makeText(itemView.context, "Clicked: ${podcast.collectionName}", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         )
             .get(PodcastsListViewModel::class.java)
 
-//        attachPodcastsListFragment()
+        attachPodcastsListFragment()
         observeLoadingState()
         observeErrorMessage()
     }
@@ -55,6 +55,14 @@ class MainActivity : AppCompatActivity() {
      * @param args        The arguments to be sent to the fragment being replaced.
      */
     private fun replaceFragment(fragmentTag: String, args: Bundle? = null) {
+        val manager = supportFragmentManager
+        val prev = manager.findFragmentByTag(fragmentTag)
+
+        // If current fragment already exists, do nothing.
+        if (prev != null) {
+            return
+        }
+
         val fragment: Fragment = when (fragmentTag) {
             PodcastsListFragment.TAG -> PodcastsListFragment.newInstance()
             else -> throw IllegalArgumentException("Unexpected fragment tag received: $fragmentTag")
