@@ -1,5 +1,6 @@
 package com.tarun.podcasts.data.remote
 
+import com.tarun.podcasts.data.BASE_URL
 import com.tarun.podcasts.data.model.PodcastsListResult
 import io.reactivex.rxjava3.core.Single
 import okhttp3.OkHttpClient
@@ -18,7 +19,7 @@ interface ApiService {
     fun searchPodcasts(@Query("term") searchTerm: String?): Single<PodcastsListResult>
 
     object Creator {
-        private const val BASE_URL = "https://itunes.apple.com/"
+//        private const val BASE_URL = "https://itunes.apple.com/"
 
         /**
          * Create an instance of [ApiService].
