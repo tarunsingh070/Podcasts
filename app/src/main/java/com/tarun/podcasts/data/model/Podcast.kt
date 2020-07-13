@@ -9,6 +9,9 @@ class Podcast {
     lateinit var artistName: String
     lateinit var collectionName: String
 
+    @SerializedName("primaryGenreName")
+    lateinit var genre: String
+
     @SerializedName("artworkUrl600")
     lateinit var artworkUrl: String
 }

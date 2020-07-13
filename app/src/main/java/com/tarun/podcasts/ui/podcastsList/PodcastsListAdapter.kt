@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.tarun.podcasts.R
 import com.tarun.podcasts.data.model.Podcast
 import com.tarun.podcasts.databinding.ItemPodcastBinding
 import com.tarun.podcasts.ui.loadImageFromUrl
@@ -26,9 +27,11 @@ class PodcastsListAdapter : RecyclerView.Adapter<PodcastsListAdapter.ViewHolder>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val context = holder.itemView.context
         holder.podcast = podcasts[position]
         holder.binding.artistName.text = holder.podcast.artistName
         holder.binding.collectionName.text = holder.podcast.collectionName
+        holder.binding.genre.text = context.getString(R.string.genre_name, holder.podcast.genre)
         holder.binding.artworkImageView.loadImageFromUrl(holder.podcast.artworkUrl)
     }
 
