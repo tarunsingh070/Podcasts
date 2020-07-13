@@ -5,8 +5,8 @@
     <string name="action_search_podcasts">Search podcasts</string>
 
     <!--Podcasts List Screen-->
-    <string name="search_podcasts">Search podcasts…</string>
-    <string name="no_results">No results!</string>
     <string name="error_message">Error fetching podcasts!</string>
     <string name="genre_name">#%s</string>
+    <string name="no_results">No results!</string>
+    <string name="search_podcasts">Search podcasts…</string>
 </resources>

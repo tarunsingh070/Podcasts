@@ -59,7 +59,6 @@ class PodcastsListAdapter : RecyclerView.Adapter<PodcastsListAdapter.ViewHolder>
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         lateinit var podcast: Podcast
         override fun onClick(v: View) {
-            // Todo: Open Podcast details fragment.
             Toast.makeText(itemView.context, "Clicked: ${podcast.collectionName}", Toast.LENGTH_SHORT).show()
         }
     }

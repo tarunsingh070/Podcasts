@@ -1,7 +1,7 @@
 package android.util;
 
 /**
- * A convenience test class for mocking Android Log class.
+ * A convenience test class for stubbing Android Log class.
  */
 public class Log {
 

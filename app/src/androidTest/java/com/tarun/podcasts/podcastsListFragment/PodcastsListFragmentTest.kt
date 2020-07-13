@@ -1,4 +1,4 @@
-package com.tarun.podcasts
+package com.tarun.podcasts.podcastsListFragment
 
 import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +10,8 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
+import com.tarun.podcasts.FileReaderTestHelper
+import com.tarun.podcasts.R
 import com.tarun.podcasts.data.remote.ApiService
 import com.tarun.podcasts.ui.main.MainActivity
 import okhttp3.mockwebserver.Dispatcher
@@ -31,7 +33,9 @@ class PodcastsListFragmentTest {
             server.start()
 
             ApiService.Creator.updateBaseUrl(server.url("/").toString())
-            server.setDispatcher(getDispatcher())
+            server.setDispatcher(
+                getDispatcher()
+            )
         }
 
         /**

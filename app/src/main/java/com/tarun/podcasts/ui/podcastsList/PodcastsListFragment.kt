@@ -87,7 +87,7 @@ class PodcastsListFragment : Fragment() {
      * Sets up the recycler view for showing the Podcasts list.
      */
     private fun setupRecyclerView() {
-        val columnCount = resources.getInteger(R.integer.podcast_list_column_count)
+        val columnCount = resources.getInteger(R.integer.podcasts_list_column_count)
 
         binding.podcastListRecyclerView.adapter = adapter
         binding.podcastListRecyclerView.layoutManager = GridLayoutManager(context, columnCount)
