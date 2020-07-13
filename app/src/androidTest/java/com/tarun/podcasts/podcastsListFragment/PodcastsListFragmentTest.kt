@@ -103,7 +103,7 @@ class PodcastsListFragmentTest {
     }
 
     @Test
-    fun testIfInitialPodcastsListLoading() {
+    fun testIfInitialPodcastsListIsLoading() {
         onView(withId(R.id.podcast_list_recycler_view))
             .perform(
                 RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(4)

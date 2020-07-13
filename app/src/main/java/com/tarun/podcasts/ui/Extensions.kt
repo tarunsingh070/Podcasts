@@ -15,7 +15,6 @@ fun ImageView.loadImageFromUrl(imageUrl: String) {
     Glide.with(context)
         .load(imageUrl)
         .placeholder(ColorDrawable(Color.DKGRAY))
-        .override(this.layoutParams.width, this.layoutParams.height)
         .into(this)
 }
 
