@@ -62,7 +62,7 @@ class PodcastsListViewModel(
      *
      * @param searchTerm The search term submitted by user.
      */
-    fun getPodcastList(searchTerm: String = "Android"): MutableLiveData<ArrayList<Podcast>> {
+    private fun getPodcastList(searchTerm: String = "Android"): MutableLiveData<ArrayList<Podcast>> {
         setLoadingState(true)
         disposables.add(
             podcastRepository

@@ -23,7 +23,7 @@ import org.junit.runner.RunWith
 class PodcastsListFragmentTest {
 
     companion object {
-        lateinit var server: MockWebServer
+        private lateinit var server: MockWebServer
 
         @BeforeClass @JvmStatic
         fun setUp() {
