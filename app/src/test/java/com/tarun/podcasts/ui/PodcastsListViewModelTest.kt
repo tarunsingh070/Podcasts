@@ -76,9 +76,8 @@ class PodcastsListViewModelTest {
     }
 
     @Test
-    fun testOnQuerySubmitted_sameQuery_shouldGetPodcastsList() {
-        viewModel.setQuery(test)
-        viewModel.onQuerySubmitted(test)
+    fun testOnQuerySubmitted_emptyQuery_shouldGetPodcastsList() {
+        viewModel.onQuerySubmitted(" ")
         Mockito.verify(mockPodcastRepository, Mockito.never()).getPodcasts(test)
     }
 

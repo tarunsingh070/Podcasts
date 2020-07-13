@@ -44,17 +44,12 @@ class PodcastsListViewModel(
      * @param searchTerm The search term submitted by user.
      */
     fun onQuerySubmitted(searchTerm: String) {
-        if (searchTerm.isEmpty() || searchTerm == this.searchTerm.value) {
+        if (searchTerm.isBlank() || searchTerm == this.searchTerm.value) {
             return
         }
 
         this.searchTerm.value = searchTerm
         getPodcastList(searchTerm)
-    }
-
-    @TestOnly
-    fun setQuery(searchTerm: String) {
-        this.searchTerm.value = searchTerm
     }
 
     @TestOnly
