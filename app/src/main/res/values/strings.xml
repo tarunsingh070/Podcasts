@@ -7,6 +7,6 @@
     <!--Podcasts List Screen-->
     <string name="error_message">Error fetching podcasts!</string>
     <string name="genre_name">#%s</string>
-    <string name="no_results">No results!</string>
+    <string name="no_results">No results :(</string>
     <string name="search_podcasts">Search podcasts…</string>
 </resources>
